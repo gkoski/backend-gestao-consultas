@@ -1,0 +1,46 @@
+package com.project.api.gestaoconsultas.controller;
+
+import com.project.api.gestaoconsultas.dto.request.ConsultaRequestDTO;
+import com.project.api.gestaoconsultas.dto.response.ConsultaResponseDTO;
+import com.project.api.gestaoconsultas.services.ConsultaService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/consultas")
+public class ConsultaController {
+
+    @Autowired
+    private ConsultaService consultaService;
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<ConsultaResponseDTO>> buscarTodos(Authentication authentication) {
+        return ResponseEntity.ok(consultaService.listar(authentication));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ConsultaResponseDTO> buscarPorId(@PathVariable Integer id) {
+        return ResponseEntity.ok(consultaService.buscarPorId(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<ConsultaResponseDTO> criar(@RequestBody @Valid ConsultaRequestDTO consulta) {
+        return ResponseEntity.status(201).body(consultaService.criar(consulta));
+    }
+
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<ConsultaResponseDTO> cancelar(@PathVariable Integer id,
+                                                        @RequestParam String motivo) {
+        return ResponseEntity.ok(consultaService.cancelar(id, motivo));
+    }
+
+    @PatchMapping("/{id}/finalizar")
+    public ResponseEntity<ConsultaResponseDTO> finalizar(@PathVariable Integer id) {
+        return ResponseEntity.ok(consultaService.finalizar(id));
+    }
+}
