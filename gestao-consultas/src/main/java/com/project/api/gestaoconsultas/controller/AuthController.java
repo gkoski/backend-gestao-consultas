@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,14 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/hash")
+    public String gerarHash(@RequestParam String senha) {
+        return passwordEncoder.encode(senha);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDTO dto) {

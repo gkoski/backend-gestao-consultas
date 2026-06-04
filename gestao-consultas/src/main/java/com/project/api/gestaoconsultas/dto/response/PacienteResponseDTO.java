@@ -1,6 +1,6 @@
 package com.project.api.gestaoconsultas.dto.response;
 
-public class PacienteResponseDTO extends DentistaResponseDTO {
+public class PacienteResponseDTO {
     private Integer id;
     private String nome;
     private String cpf;

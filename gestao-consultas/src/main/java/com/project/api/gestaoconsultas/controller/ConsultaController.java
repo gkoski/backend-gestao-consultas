@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -42,5 +43,19 @@ public class ConsultaController {
     @PatchMapping("/{id}/finalizar")
     public ResponseEntity<ConsultaResponseDTO> finalizar(@PathVariable Integer id) {
         return ResponseEntity.ok(consultaService.finalizar(id));
+    }
+
+    @GetMapping("/relatorios")
+    public ResponseEntity<List<ConsultaResponseDTO>> buscarComFiltros(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Integer idDentista,
+            @RequestParam(required = false) Integer idPaciente,
+            @RequestParam(required = false) Integer idUsuario,
+            @RequestParam(required = false) LocalDateTime dataInicio,
+            @RequestParam(required = false) LocalDateTime dataFim) {
+
+        return ResponseEntity.ok(consultaService.buscarComFiltros(
+                status, idDentista, idPaciente, idUsuario, dataInicio, dataFim
+        ));
     }
 }

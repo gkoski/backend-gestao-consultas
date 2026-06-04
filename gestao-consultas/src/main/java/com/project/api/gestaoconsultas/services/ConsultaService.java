@@ -136,4 +136,21 @@ public class ConsultaService {
         response.setStatus(consulta.getStatus());
         return response;
     }
+
+    public List<ConsultaResponseDTO> buscarComFiltros(
+            String status,
+            Integer idDentista,
+            Integer idPaciente,
+            Integer idUsuario,
+            LocalDateTime dataInicio,
+            LocalDateTime dataFim) {
+
+        List<Consulta> consultas = consultaRepository.buscarComFiltros(
+                status, idDentista, idPaciente, idUsuario, dataInicio, dataFim
+        );
+
+        return consultas.stream()
+                .map(this::converterParaDTO)
+                .collect(Collectors.toList());
+    }
 }

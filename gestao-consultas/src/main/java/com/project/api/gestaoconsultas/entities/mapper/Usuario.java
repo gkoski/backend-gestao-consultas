@@ -126,6 +126,8 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println("Perfil do usuário: " + perfil);
+        System.out.println("Authority gerada: ROLE_" + perfil);
         return List.of(new SimpleGrantedAuthority("ROLE_" + perfil));
     }
 
