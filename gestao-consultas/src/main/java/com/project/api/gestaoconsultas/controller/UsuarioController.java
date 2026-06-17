@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -41,6 +42,13 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponseDTO> editar(@PathVariable Integer id,
                                            @RequestBody @Valid UsuarioRequestDTO dados) {
         return ResponseEntity.ok(usuarioService.editar(id, dados));
+    }
+
+    @PutMapping("/{id}/resetar-senha")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> resetarSenha(@PathVariable Integer id, @RequestBody Map<String, String> body) {
+        usuarioService.resetarSenha(id, body.get("senha"));
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

@@ -2,11 +2,14 @@ package com.project.api.gestaoconsultas.controller;
 
 import com.project.api.gestaoconsultas.dto.request.ConsultaRequestDTO;
 import com.project.api.gestaoconsultas.dto.response.ConsultaResponseDTO;
+import com.project.api.gestaoconsultas.entities.mapper.Usuario;
 import com.project.api.gestaoconsultas.services.ConsultaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,9 +32,13 @@ public class ConsultaController {
         return ResponseEntity.ok(consultaService.buscarPorId(id));
     }
 
-    @PostMapping
-    public ResponseEntity<ConsultaResponseDTO> criar(@RequestBody @Valid ConsultaRequestDTO consulta) {
-        return ResponseEntity.status(201).body(consultaService.criar(consulta));
+    @PostMapping("/criar")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DENTISTA')")
+    public ResponseEntity<ConsultaResponseDTO> criar(
+            @RequestBody @Valid ConsultaRequestDTO dto,
+            @AuthenticationPrincipal Usuario usuarioLogado) {
+        dto.setIdUsuario(usuarioLogado.getId());   // descomenta isso
+        return ResponseEntity.status(201).body(consultaService.criar(dto));
     }
 
     @PatchMapping("/{id}/cancelar")

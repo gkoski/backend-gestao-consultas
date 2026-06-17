@@ -18,17 +18,16 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    // Gera o token
-    public String gerarToken(String email) {
+    public String gerarToken(String email, String perfil) {
         return Jwts.builder()
                 .subject(email)
+                .claim("perfil", perfil)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getChave())
                 .compact();
     }
 
-    // Extrai o email do token
     public String extrairEmail(String token) {
         return Jwts.parser()
                 .verifyWith(getChave())
@@ -38,7 +37,6 @@ public class JwtService {
                 .getSubject();
     }
 
-    // Valida se o token é válido
     public boolean tokenValido(String token) {
         try {
             extrairEmail(token);

@@ -1,6 +1,6 @@
-package com.project.api.gestaoconsultas.dto;
+package com.project.api.gestaoconsultas.dto.request;
 
-public class LoginDTO {
+public class LoginRequestDTO {
     private String email;
     private String senha;
 

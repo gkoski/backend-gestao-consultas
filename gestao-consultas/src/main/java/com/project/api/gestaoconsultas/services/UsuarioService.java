@@ -94,6 +94,11 @@ public class UsuarioService {
         return response;
     }
 
+    public void resetarSenha(Integer id, String novaSenha) {
+        Usuario usuario = buscarPorIdEntidade(id);
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
 
     public void deletar(Integer id) {
         buscarPorId(id); // garante que o usuário existe antes de deletar

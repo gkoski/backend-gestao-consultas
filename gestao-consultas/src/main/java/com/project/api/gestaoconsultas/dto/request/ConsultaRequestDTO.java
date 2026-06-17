@@ -13,7 +13,6 @@ public class ConsultaRequestDTO {
     @NotNull
     private Integer idDentista;
 
-    @NotNull
     private Integer idUsuario;
 
     @NotBlank
